@@ -1,0 +1,25 @@
+Ubuntu / Debian
+Mettez à jour la liste des paquets :
+sudo apt update
+
+Installez MySQL Server :
+sudo apt install mysql-server
+
+Vérifiez que le service fonctionne :
+sudo systemctl status mysql
+
+(Recommandé) Lancez la configuration de sécurité :
+sudo mysql_secure_installation
+
+Vérifier l'installation
+mysql --version
+
+Connectez-vous au serveur :
+mysql -u root -p
+
+Ouvrir le port 3306 (si nécessaire)
+
+Si vous souhaitez autoriser des connexions distantes :
+Avec UFW :
+
+sudo ufw allow 3306/tcp

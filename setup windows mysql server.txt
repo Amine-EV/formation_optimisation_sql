@@ -1,0 +1,66 @@
+Si tu as téléchargé MySQL sous forme d'archive .zip sur Windows, voici comment l'installer manuellement.
+
+1. Décompresser l'archive
+
+Par exemple :
+
+C:\mysql
+
+Tu devrais obtenir un dossier contenant notamment :
+
+C:\mysql\bin
+C:\mysql\docs
+C:\mysql\share
+2. Créer le dossier de données
+
+Dans C:\mysql, crée un dossier :
+
+C:\mysql\data
+3. Créer un fichier de configuration
+
+Crée un fichier my.ini dans C:\mysql :
+
+[mysqld]
+basedir=C:/mysql
+datadir=C:/mysql/data
+port=3306
+
+[client]
+port=3306
+
+Adapte les chemins si tu as installé MySQL ailleurs.
+
+4. Ouvrir un terminal administrateur
+
+Ouvre Invite de commandes ou PowerShell en mode administrateur.
+
+Place-toi dans le dossier bin :
+
+cd C:\mysql\bin
+5. Initialiser la base
+
+Pour générer le répertoire système MySQL :
+
+mysqld --initialize --console
+
+À la fin, MySQL affichera un mot de passe temporaire pour l'utilisateur root. Note-le soigneusement.
+
+Si tu préfères un mot de passe vide pour un environnement de test :
+
+mysqld --initialize-insecure
+6. Installer le service Windows
+mysqld --install MySQL
+
+Tu devrais voir :
+
+Service successfully installed.
+7. Démarrer le service
+net start MySQL
+
+ou :
+
+sc start MySQL
+8. Se connecter
+mysql -u root -p
+
+Puis saisis le mot de passe temporaire obtenu à l'étape 5.
