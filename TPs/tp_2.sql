@@ -312,3 +312,62 @@ CALL comparer_requetes(
      ORDER BY total DESC
      LIMIT 50'
 );
+
+-- ┌─────────────────────────────────────────────────────────────┐
+-- │  EXERCICE 6 — Sous-requête corrélée → JOIN  (8 min)         │
+-- └─────────────────────────────────────────────────────────────┘
+--
+--  Contexte :
+--  Le service client veut la liste des clients avec le montant
+--  de leur dernière commande. Un développeur a écrit cette requête
+--  qui fonctionne, mais elle est très lente sur 50 000 clients.
+
+-- Requête originale (sous-requête corrélée)
+CALL analyse_requete(
+    'SELECT
+         c.id,
+         c.first_name,
+         c.last_name,
+         c.email,
+         (SELECT MAX(o.total)
+          FROM orders o
+          WHERE o.customer_id = c.id) AS derniere_commande
+     FROM customers c
+     WHERE c.is_active = 1
+     LIMIT 100'
+);
+
+-- ─── Questions à remplir ──────────────────────────────────────
+-- Combien de fois la sous-requête est-elle exécutée ? __________
+-- Quel est le type d'accès sur orders dans la sous-requête ? ___
+-- Quel est le coût total estimé ? _____________________________
+-- Pourquoi dit-on que cette sous-requête est "corrélée" ? ______
+
+--  Réécrivez cette requête en utilisant un JOIN et une agrégation.
+--  Le résultat doit être identique.
+
+-- Votre réécriture :
+-- SELECT ...
+-- FROM customers c
+-- ...
+
+-- Comparez les deux versions :
+CALL comparer_requetes(
+    'SELECT
+         c.id, c.first_name, c.last_name, c.email,
+         (SELECT MAX(o.total)
+          FROM orders o
+          WHERE o.customer_id = c.id) AS derniere_commande
+     FROM customers c
+     WHERE c.is_active = 1
+     LIMIT 100',
+
+    -- Remplacez cette ligne par votre réécriture
+    'SELECT c.id, c.first_name, c.last_name, c.email, NULL AS derniere_commande
+     FROM customers c WHERE c.is_active = 1 LIMIT 100'
+);
+
+-- ─── Questions à remplir ──────────────────────────────────────
+-- Différence de cost entre les deux versions : _________________
+-- Différence de rows estimées : ________________________________
+-- La sous-requête corrélée est-elle toujours plus lente ? _______
